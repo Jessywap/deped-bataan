@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DepEd Bataan | Upload Issuance</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background: #f4f7fc; min-height: 100vh; padding-bottom: 3rem; }
+
+    /* ---------- HEADER ---------- */
+    .top-bar {
+      background: #0033a0;
+      color: white;
+      padding: 0.7rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 4px solid #fdb913;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo-area { display: flex; align-items: center; gap: 15px; }
+    .deped-logo-img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #fff;
+      padding: 3px;
+      border: 2px solid #fdb913;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .logo-text h1 { font-size: 1.3rem; }
+    .logo-text p { font-size: 0.75rem; color: #ffd966; }
+    .back-link {
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.15);
+      padding: 9px 18px;
+      border-radius: 30px;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+    }
+    .back-link:hover { background: rgba(255,255,255,0.3); }
+
+    /* ---------- CONTAINER ---------- */
+    .container { max-width: 900px; margin: 2rem auto; padding: 0 2rem; }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 25px rgba(0, 51, 160, 0.08);
+      border: 1px solid #e6edf8;
+    }
+    .card h2 {
+      color: #0033a0;
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .card h2 i { color: #fdb913; }
+    .card .subtitle { color: #5b6b8c; font-size: 0.9rem; margin-bottom: 2rem; }
+
+    /* ---------- FORM ---------- */
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #1e2a5a;
+      font-size: 0.9rem;
+    }
+    .form-group label .req { color: #d32f2f; }
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #d0ddeb;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: 0.2s;
+      background: #fafcff;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: #0033a0;
+      box-shadow: 0 0 0 3px rgba(0,51,160,0.1);
+    }
+    .form-group input[type="number"] { -moz-appearance: textfield; }
+    .form-group input[type="number"]::-webkit-outer-spin-button,
+    .form-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* ---------- PREVIEW BOX ---------- */
+    .preview-box {
+      background: #f0f5ff;
+      border: 1.5px dashed #0033a0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      color: #0033a0;
+      margin-top: -6px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 46px;
+    }
+    .preview-box i { color: #fdb913; }
+    .preview-box .placeholder { color: #8899bb; font-style: italic; }
+
+    /* ---------- FILE DROP ---------- */
+    .file-drop {
+      border: 2px dashed #b8c7e7;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #fafcff;
+    }
+    .file-drop:hover, .file-drop.dragover { border-color: #0033a0; background: #f0f5ff; }
+    .file-drop i { font-size: 2.5rem; color: #0033a0; margin-bottom: 10px; }
+    .file-drop p { color: #5b6b8c; font-size: 0.9rem; }
+    .file-drop .file-name {
+      margin-top: 12px;
+      font-weight: 600;
+      color: #0033a0;
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+    .file-drop input[type="file"] { display: none; }
+
+    /* ---------- BUTTON ---------- */
+    .btn {
+      background: #0033a0;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+      font-family: inherit;
+    }
+    .btn:hover { background: #002277; transform: translateY(-2px); }
+    .btn:disabled { background: #9aa9c4; cursor: not-allowed; transform: none; }
+
+    /* ---------- ALERTS ---------- */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    .alert.show { display: flex; }
+    .alert-success { background: #e6f7e6; color: #1e7a1e; border: 1px solid #b3e6b3; }
+    .alert-error { background: #ffeaea; color: #c62828; border: 1px solid #ffb3b3; }
+
+    /* ---------- RECENT SECTION ---------- */
+    .recent-section { margin-top: 2.5rem; }
+    .recent-section h3 {
+      color: #0033a0;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .recent-item {
+      background: #fafcff;
+      border: 1px solid #e6edf8;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      transition: 0.2s;
+    }
+    .recent-item:hover { border-color: #0033a0; }
+    .recent-item .info { flex: 1; min-width: 200px; }
+    .recent-item .info strong { color: #1e2a5a; font-size: 0.95rem; display: block; }
+    .recent-item .info small { color: #5b6b8c; font-size: 0.8rem; }
+    .recent-item .actions { display: flex; gap: 8px; }
+    .btn-small {
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+    }
+    .btn-view { background: #e0edff; color: #0033a0; }
+    .btn-view:hover { background: #0033a0; color: white; }
+    .btn-del { background: #ffeaea; color: #c62828; }
+    .btn-del:hover { background: #c62828; color: white; }
+
+    /* ---------- LOGOUT ---------- */
+    .logout-btn {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      margin-left: 8px;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.3); }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 1rem; }
+      .card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-bar">
+    <div class="logo-area">
+      <img src="/logo.png" alt="DepEd Bataan Logo" class="deped-logo-img">
+      <div class="logo-text">
+        <h1>DepEd Bataan</h1>
+        <p>Upload Issuance</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+      <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Public Site</a>
+      <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <div class="container">
+    <div class="card">
+      <h2><i class="fas fa-cloud-upload-alt"></i> Upload New Issuance</h2>
+      <p class="subtitle">Fill out the details below to publish a new Division Issuance.</p>
+
+      <div id="alertBox" class="alert"></div>
+
+      <form id="uploadForm">
+        <div class="form-group">
+          <label>Document Type <span class="req">*</span></label>
+          <select name="type" id="type" required>
+            <option value="">-- Select Type --</option>
+            <option value="memorandum">Division Memorandum</option>
+            <option value="advisory">Division Advisory</option>
+            <option value="letter">Division Letter</option>
+            <option value="office">Office Memorandum</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Issuance Number <span class="req">*</span> <span style="color:#8899bb; font-weight:400;">(number only)</span></label>
+          <input type="number" name="number" id="number" placeholder="e.g., 400" min="1" required>
+        </div>
+
+        <!-- Live preview of the generated issuance label -->
+        <div class="preview-box" id="previewBox">
+          <i class="fas fa-eye"></i>
+          <span id="previewText" class="placeholder">Select a type and enter a number to preview the label...</span>
+        </div>
+
+        <div class="form-group">
+          <label>Title <span class="req">*</span></label>
+          <input type="text" name="title" id="title" placeholder="e.g., Conduct of the 2025 Division Mathematics Festival" required>
+        </div>
+
+        <div class="form-group">
+          <label>Uploaded By</label>
+          <input type="text" name="uploadedBy" id="uploadedBy" placeholder="e.g., Curriculum & Instruction Division">
+        </div>
+
+        <div class="form-group">
+          <label>Attach File <span class="req">*</span></label>
+          <div class="file-drop" id="fileDrop">
+            <i class="fas fa-file-upload"></i>
+            <p>Click to browse or drag & drop your file here</p>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Accepted: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX (Max 20MB)</p>
+            <div class="file-name" id="fileName"></div>
+            <input type="file" name="file" id="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">
+          <i class="fas fa-upload"></i> Upload Issuance
+        </button>
+      </form>
+
+      <div class="recent-section">
+        <h3><i class="fas fa-history"></i> Recently Uploaded</h3>
+        <div id="recentList">
+          <p style="color:#5b6b8c; font-size:0.9rem;">Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // ADMIN PASSWORD — read from sessionStorage
+    // The password is set by the public site (index.html)
+    // when the user clicks "DepEd" and enters the correct password.
+    // =========================================================
+    let ADMIN_PASSWORD = sessionStorage.getItem('adminPass') || '';
+
+    // If no password in session, redirect back to public site
+    if (!ADMIN_PASSWORD) {
+      alert('Please log in from the public site first.');
+      window.location.href = '/';
+    }
+
+    // =========================================================
+    // DOM elements
+    // =========================================================
+    const API_URL = '/api/issuances';
+    const form = document.getElementById('uploadForm');
+    const typeSelect = document.getElementById('type');
+    const numberInput = document.getElementById('number');
+    const previewText = document.getElementById('previewText');
+    const fileDrop = document.getElementById('fileDrop');
+    const fileInput = document.getElementById('file');
+    const fileName = document.getElementById('fileName');
+    const alertBox = document.getElementById('alertBox');
+    const submitBtn = document.getElementById('submitBtn');
+    const recentList = document.getElementById('recentList');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // =========================================================
+    // Logout — clears session and goes back home
+    // =========================================================
+    logoutBtn.addEventListener('click', () => {
+      if (!confirm('Log out of admin?')) return;
+      sessionStorage.removeItem('adminPass');
+      window.location.href = '/';
+    });
+
+    // =========================================================
+    // Live preview of the full issuance label
+    // Example: "Division Memorandum No. 400, s. 2026"
+    // =========================================================
+    function updatePreview() {
+      const type = typeSelect.value;
+      const num = numberInput.value.trim();
+
+      if (!type || !num) {
+        previewText.textContent = 'Select a type and enter a number to preview the label...';
+        previewText.className = 'placeholder';
+        return;
+      }
+
+      const prefix = {
+        memorandum: 'Division Memorandum No.',
+        advisory: 'Division Advisory No.',
+        letter: 'Division Letter No.',
+        office: 'Office Memorandum No.'
+      }[type];
+
+      const year = new Date().getFullYear();
+      previewText.textContent = `${prefix} ${num}, s. ${year}`;
+      previewText.className = '';
+    }
+
+    typeSelect.addEventListener('change', updatePreview);
+    numberInput.addEventListener('input', updatePreview);
+
+    // =========================================================
+    // File drop visuals
+    // =========================================================
+    fileDrop.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        fileName.textContent = '📎 ' + fileInput.files[0].name;
+      }
+    });
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      fileDrop.addEventListener(evt, e => { e.preventDefault(); fileDrop.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      fileDrop.addEventListener(evt, e => { e.preventDefault(); fileDrop.classList.remove('dragover'); });
+    });
+    fileDrop.addEventListener('drop', e => {
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        fileInput.files = files;
+        fileName.textContent = '📎 ' + files[0].name;
+      }
+    });
+
+    // =========================================================
+    // Alert helper
+    // =========================================================
+    function showAlert(message, type = 'success') {
+      alertBox.className = `alert alert-${type} show`;
+      alertBox.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+      setTimeout(() => alertBox.classList.remove('show'), 5000);
+    }
+
+    // =========================================================
+    // Upload handler
+    // =========================================================
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const numValue = numberInput.value.trim();
+      if (!/^\d+$/.test(numValue)) {
+        showAlert('Issuance number must contain digits only.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'x-admin-password': ADMIN_PASSWORD },
+          body: formData
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          // If server says unauthorized, session is stale — bounce home
+          if (res.status === 401) {
+            sessionStorage.removeItem('adminPass');
+            showAlert('Session expired. Redirecting...', 'error');
+            setTimeout(() => window.location.href = '/', 1500);
+            return;
+          }
+          throw new Error(data.error || 'Upload failed');
+        }
+
+        showAlert('Issuance uploaded successfully!', 'success');
+        form.reset();
+        fileName.textContent = '';
+        updatePreview();
+        loadRecent();
+      } catch (err) {
+        showAlert(err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Issuance';
+      }
+    });
+
+    // =========================================================
+    // Recent uploads
+    // =========================================================
+    async function loadRecent() {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        if (!data.length) {
+          recentList.innerHTML = '<p style="color:#5b6b8c; font-size:0.9rem;">No uploads yet.</p>';
+          return;
+        }
+
+        recentList.innerHTML = data.slice(0, 5).map(item => `
+          <div class="recent-item">
+            <div class="info">
+              <strong>${escapeHtml(item.number)} — ${escapeHtml(item.title)}</strong>
+              <small>${escapeHtml(item.typeLabel)} • ${escapeHtml(item.dateFormatted)}</small>
+            </div>
+            <div class="actions">
+              <a href="${item.fileUrl}" target="_blank" class="btn-small btn-view"><i class="fas fa-eye"></i> View</a>
+              <button class="btn-small btn-del" onclick="deleteIssuance('${item._id}')"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        recentList.innerHTML = '<p style="color:#c62828; font-size:0.9rem;">Failed to load recent uploads.</p>';
+      }
+    }
+
+    // =========================================================
+    // Delete handler
+    // =========================================================
+    async function deleteIssuance(id) {
+      if (!confirm('Are you sure you want to delete this issuance?')) return;
+      try {
+        const res = await fetch(`${API_URL}/${id}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-password': ADMIN_PASSWORD }
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            sessionStorage.removeItem('adminPass');
+            window.location.href = '/';
+            return;
+          }
+          throw new Error(data.error);
+        }
+        showAlert('Issuance deleted.', 'success');
+        loadRecent();
+      } catch (err) {
+        showAlert(err.message, 'error');
+      }
+    }
+
+    // =========================================================
+    // Helper: escape HTML to prevent XSS
+    // =========================================================
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // =========================================================
+    // Init
+    // =========================================================
+    updatePreview();
+    loadRecent();
+  </script>
+</body>
+</html>
